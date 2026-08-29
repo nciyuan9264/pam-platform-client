@@ -2,8 +2,6 @@ name: Validate generated Kitex client
 
 on:
   push:
-    branches:
-      - 'generated/**'
 
 permissions:
   contents: read
