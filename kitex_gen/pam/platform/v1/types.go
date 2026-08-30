@@ -1044,6 +1044,7 @@ type SnapshotReq struct {
 	Service    *string `thrift:"service,2,optional" frugal:"2,optional,string" json:"service,omitempty"`
 	Branch     *string `thrift:"branch,3,optional" frugal:"3,optional,string" json:"branch,omitempty"`
 	Commit     *string `thrift:"commit,4,optional" frugal:"4,optional,string" json:"commit,omitempty"`
+	Psm        *string `thrift:"psm,5,optional" frugal:"5,optional,string" json:"psm,omitempty"`
 }
 
 func NewSnapshotReq() *SnapshotReq {
@@ -1088,6 +1089,15 @@ func (p *SnapshotReq) GetCommit() (v string) {
 	}
 	return *p.Commit
 }
+
+var SnapshotReq_Psm_DEFAULT string
+
+func (p *SnapshotReq) GetPsm() (v string) {
+	if !p.IsSetPsm() {
+		return SnapshotReq_Psm_DEFAULT
+	}
+	return *p.Psm
+}
 func (p *SnapshotReq) SetRepository(val *string) {
 	p.Repository = val
 }
@@ -1099,6 +1109,9 @@ func (p *SnapshotReq) SetBranch(val *string) {
 }
 func (p *SnapshotReq) SetCommit(val *string) {
 	p.Commit = val
+}
+func (p *SnapshotReq) SetPsm(val *string) {
+	p.Psm = val
 }
 
 func (p *SnapshotReq) IsSetRepository() bool {
@@ -1117,6 +1130,10 @@ func (p *SnapshotReq) IsSetCommit() bool {
 	return p.Commit != nil
 }
 
+func (p *SnapshotReq) IsSetPsm() bool {
+	return p.Psm != nil
+}
+
 func (p *SnapshotReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1129,6 +1146,7 @@ var fieldIDToName_SnapshotReq = map[int16]string{
 	2: "service",
 	3: "branch",
 	4: "commit",
+	5: "psm",
 }
 
 type RepositorySummary struct {
@@ -1383,19 +1401,21 @@ var fieldIDToName_Endpoint = map[int16]string{
 }
 
 type ServiceSummary struct {
-	Repository    string                   `thrift:"repository,1,required" frugal:"1,required,string" json:"repository"`
-	Branch        string                   `thrift:"branch,2,required" frugal:"2,required,string" json:"branch"`
-	Version       string                   `thrift:"version,3,required" frugal:"3,required,string" json:"version"`
-	Ref           string                   `thrift:"ref,4,required" frugal:"4,required,string" json:"ref"`
-	Commit        string                   `thrift:"commit,5,required" frugal:"5,required,string" json:"commit"`
-	FilePath      string                   `thrift:"filePath,6,required" frugal:"6,required,string" json:"filePath"`
-	Name          string                   `thrift:"name,7,required" frugal:"7,required,string" json:"name"`
-	EndpointCount int32                    `thrift:"endpointCount,8,required" frugal:"8,required,i32" json:"endpointCount"`
-	Endpoints     []*Endpoint              `thrift:"endpoints,9,required" frugal:"9,required,list<Endpoint>" json:"endpoints"`
-	Structs       map[string]*ThriftStruct `thrift:"structs,10,required" frugal:"10,required,map<string:ThriftStruct>" json:"structs"`
-	RawIdl        string                   `thrift:"rawIdl,11,required" frugal:"11,required,string" json:"rawIdl"`
-	IncludedIdl   map[string]string        `thrift:"includedIdl,12,optional" frugal:"12,optional,map<string:string>" json:"includedIdl,omitempty"`
-	Psm           *string                  `thrift:"psm,13,optional" frugal:"13,optional,string" json:"psm,omitempty"`
+	Repository      string                   `thrift:"repository,1,required" frugal:"1,required,string" json:"repository"`
+	Branch          string                   `thrift:"branch,2,required" frugal:"2,required,string" json:"branch"`
+	Version         string                   `thrift:"version,3,required" frugal:"3,required,string" json:"version"`
+	Ref             string                   `thrift:"ref,4,required" frugal:"4,required,string" json:"ref"`
+	Commit          string                   `thrift:"commit,5,required" frugal:"5,required,string" json:"commit"`
+	FilePath        string                   `thrift:"filePath,6,required" frugal:"6,required,string" json:"filePath"`
+	Name            string                   `thrift:"name,7,required" frugal:"7,required,string" json:"name"`
+	EndpointCount   int32                    `thrift:"endpointCount,8,required" frugal:"8,required,i32" json:"endpointCount"`
+	Endpoints       []*Endpoint              `thrift:"endpoints,9,required" frugal:"9,required,list<Endpoint>" json:"endpoints"`
+	Structs         map[string]*ThriftStruct `thrift:"structs,10,required" frugal:"10,required,map<string:ThriftStruct>" json:"structs"`
+	RawIdl          string                   `thrift:"rawIdl,11,required" frugal:"11,required,string" json:"rawIdl"`
+	IncludedIdl     map[string]string        `thrift:"includedIdl,12,optional" frugal:"12,optional,map<string:string>" json:"includedIdl,omitempty"`
+	Psm             *string                  `thrift:"psm,13,optional" frugal:"13,optional,string" json:"psm,omitempty"`
+	SemanticVersion *string                  `thrift:"semanticVersion,14,optional" frugal:"14,optional,string" json:"semanticVersion,omitempty"`
+	VersionNumber   *int64                   `thrift:"versionNumber,15,optional" frugal:"15,optional,i64" json:"versionNumber,omitempty"`
 }
 
 func NewServiceSummary() *ServiceSummary {
@@ -1466,6 +1486,24 @@ func (p *ServiceSummary) GetPsm() (v string) {
 	}
 	return *p.Psm
 }
+
+var ServiceSummary_SemanticVersion_DEFAULT string
+
+func (p *ServiceSummary) GetSemanticVersion() (v string) {
+	if !p.IsSetSemanticVersion() {
+		return ServiceSummary_SemanticVersion_DEFAULT
+	}
+	return *p.SemanticVersion
+}
+
+var ServiceSummary_VersionNumber_DEFAULT int64
+
+func (p *ServiceSummary) GetVersionNumber() (v int64) {
+	if !p.IsSetVersionNumber() {
+		return ServiceSummary_VersionNumber_DEFAULT
+	}
+	return *p.VersionNumber
+}
 func (p *ServiceSummary) SetRepository(val string) {
 	p.Repository = val
 }
@@ -1505,6 +1543,12 @@ func (p *ServiceSummary) SetIncludedIdl(val map[string]string) {
 func (p *ServiceSummary) SetPsm(val *string) {
 	p.Psm = val
 }
+func (p *ServiceSummary) SetSemanticVersion(val *string) {
+	p.SemanticVersion = val
+}
+func (p *ServiceSummary) SetVersionNumber(val *int64) {
+	p.VersionNumber = val
+}
 
 func (p *ServiceSummary) IsSetIncludedIdl() bool {
 	return p.IncludedIdl != nil
@@ -1512,6 +1556,14 @@ func (p *ServiceSummary) IsSetIncludedIdl() bool {
 
 func (p *ServiceSummary) IsSetPsm() bool {
 	return p.Psm != nil
+}
+
+func (p *ServiceSummary) IsSetSemanticVersion() bool {
+	return p.SemanticVersion != nil
+}
+
+func (p *ServiceSummary) IsSetVersionNumber() bool {
+	return p.VersionNumber != nil
 }
 
 func (p *ServiceSummary) String() string {
@@ -1535,6 +1587,8 @@ var fieldIDToName_ServiceSummary = map[int16]string{
 	11: "rawIdl",
 	12: "includedIdl",
 	13: "psm",
+	14: "semanticVersion",
+	15: "versionNumber",
 }
 
 type SnapshotResp struct {
@@ -1641,10 +1695,12 @@ var fieldIDToName_ServiceBranchSummary = map[int16]string{
 }
 
 type ServiceCatalogItem struct {
-	Name       string                  `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
-	Repository string                  `thrift:"repository,2,required" frugal:"2,required,string" json:"repository"`
-	Branches   []*ServiceBranchSummary `thrift:"branches,3,required" frugal:"3,required,list<ServiceBranchSummary>" json:"branches"`
-	Psm        *string                 `thrift:"psm,4,optional" frugal:"4,optional,string" json:"psm,omitempty"`
+	Name            string                  `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
+	Repository      string                  `thrift:"repository,2,required" frugal:"2,required,string" json:"repository"`
+	Branches        []*ServiceBranchSummary `thrift:"branches,3,required" frugal:"3,required,list<ServiceBranchSummary>" json:"branches"`
+	Psm             *string                 `thrift:"psm,4,optional" frugal:"4,optional,string" json:"psm,omitempty"`
+	SemanticVersion *string                 `thrift:"semanticVersion,5,optional" frugal:"5,optional,string" json:"semanticVersion,omitempty"`
+	VersionNumber   *int64                  `thrift:"versionNumber,6,optional" frugal:"6,optional,i64" json:"versionNumber,omitempty"`
 }
 
 func NewServiceCatalogItem() *ServiceCatalogItem {
@@ -1674,6 +1730,24 @@ func (p *ServiceCatalogItem) GetPsm() (v string) {
 	}
 	return *p.Psm
 }
+
+var ServiceCatalogItem_SemanticVersion_DEFAULT string
+
+func (p *ServiceCatalogItem) GetSemanticVersion() (v string) {
+	if !p.IsSetSemanticVersion() {
+		return ServiceCatalogItem_SemanticVersion_DEFAULT
+	}
+	return *p.SemanticVersion
+}
+
+var ServiceCatalogItem_VersionNumber_DEFAULT int64
+
+func (p *ServiceCatalogItem) GetVersionNumber() (v int64) {
+	if !p.IsSetVersionNumber() {
+		return ServiceCatalogItem_VersionNumber_DEFAULT
+	}
+	return *p.VersionNumber
+}
 func (p *ServiceCatalogItem) SetName(val string) {
 	p.Name = val
 }
@@ -1686,9 +1760,23 @@ func (p *ServiceCatalogItem) SetBranches(val []*ServiceBranchSummary) {
 func (p *ServiceCatalogItem) SetPsm(val *string) {
 	p.Psm = val
 }
+func (p *ServiceCatalogItem) SetSemanticVersion(val *string) {
+	p.SemanticVersion = val
+}
+func (p *ServiceCatalogItem) SetVersionNumber(val *int64) {
+	p.VersionNumber = val
+}
 
 func (p *ServiceCatalogItem) IsSetPsm() bool {
 	return p.Psm != nil
+}
+
+func (p *ServiceCatalogItem) IsSetSemanticVersion() bool {
+	return p.SemanticVersion != nil
+}
+
+func (p *ServiceCatalogItem) IsSetVersionNumber() bool {
+	return p.VersionNumber != nil
 }
 
 func (p *ServiceCatalogItem) String() string {
@@ -1703,6 +1791,8 @@ var fieldIDToName_ServiceCatalogItem = map[int16]string{
 	2: "repository",
 	3: "branches",
 	4: "psm",
+	5: "semanticVersion",
+	6: "versionNumber",
 }
 
 type ServiceCatalogResp struct {
@@ -1917,20 +2007,22 @@ var fieldIDToName_ClientArtifactSummary = map[int16]string{
 }
 
 type IDLVersionSummary struct {
-	Repository     string                 `thrift:"repository,1,required" frugal:"1,required,string" json:"repository"`
-	Service        string                 `thrift:"service,2,required" frugal:"2,required,string" json:"service"`
-	Branch         string                 `thrift:"branch,3,required" frugal:"3,required,string" json:"branch"`
-	Ref            string                 `thrift:"ref,4,required" frugal:"4,required,string" json:"ref"`
-	Commit         string                 `thrift:"commit,5,required" frugal:"5,required,string" json:"commit"`
-	ShortCommit    string                 `thrift:"shortCommit,6,required" frugal:"6,required,string" json:"shortCommit"`
-	Tag            *string                `thrift:"tag,7,optional" frugal:"7,optional,string" json:"tag,omitempty"`
-	Checksum       string                 `thrift:"checksum,8,required" frugal:"8,required,string" json:"checksum"`
-	GeneratedAt    string                 `thrift:"generatedAt,9,required" frugal:"9,required,string" json:"generatedAt"`
-	IsHead         bool                   `thrift:"isHead,10,required" frugal:"10,required,bool" json:"isHead"`
-	FilePath       string                 `thrift:"filePath,11,required" frugal:"11,required,string" json:"filePath"`
-	EndpointCount  int32                  `thrift:"endpointCount,12,required" frugal:"12,required,i32" json:"endpointCount"`
-	ClientArtifact *ClientArtifactSummary `thrift:"clientArtifact,13,optional" frugal:"13,optional,ClientArtifactSummary" json:"clientArtifact,omitempty"`
-	VersionNumber  *int64                 `thrift:"versionNumber,14,optional" frugal:"14,optional,i64" json:"versionNumber,omitempty"`
+	Repository      string                 `thrift:"repository,1,required" frugal:"1,required,string" json:"repository"`
+	Service         string                 `thrift:"service,2,required" frugal:"2,required,string" json:"service"`
+	Branch          string                 `thrift:"branch,3,required" frugal:"3,required,string" json:"branch"`
+	Ref             string                 `thrift:"ref,4,required" frugal:"4,required,string" json:"ref"`
+	Commit          string                 `thrift:"commit,5,required" frugal:"5,required,string" json:"commit"`
+	ShortCommit     string                 `thrift:"shortCommit,6,required" frugal:"6,required,string" json:"shortCommit"`
+	Tag             *string                `thrift:"tag,7,optional" frugal:"7,optional,string" json:"tag,omitempty"`
+	Checksum        string                 `thrift:"checksum,8,required" frugal:"8,required,string" json:"checksum"`
+	GeneratedAt     string                 `thrift:"generatedAt,9,required" frugal:"9,required,string" json:"generatedAt"`
+	IsHead          bool                   `thrift:"isHead,10,required" frugal:"10,required,bool" json:"isHead"`
+	FilePath        string                 `thrift:"filePath,11,required" frugal:"11,required,string" json:"filePath"`
+	EndpointCount   int32                  `thrift:"endpointCount,12,required" frugal:"12,required,i32" json:"endpointCount"`
+	ClientArtifact  *ClientArtifactSummary `thrift:"clientArtifact,13,optional" frugal:"13,optional,ClientArtifactSummary" json:"clientArtifact,omitempty"`
+	VersionNumber   *int64                 `thrift:"versionNumber,14,optional" frugal:"14,optional,i64" json:"versionNumber,omitempty"`
+	SemanticVersion *string                `thrift:"semanticVersion,15,optional" frugal:"15,optional,string" json:"semanticVersion,omitempty"`
+	Psm             *string                `thrift:"psm,16,optional" frugal:"16,optional,string" json:"psm,omitempty"`
 }
 
 func NewIDLVersionSummary() *IDLVersionSummary {
@@ -2010,6 +2102,24 @@ func (p *IDLVersionSummary) GetVersionNumber() (v int64) {
 	}
 	return *p.VersionNumber
 }
+
+var IDLVersionSummary_SemanticVersion_DEFAULT string
+
+func (p *IDLVersionSummary) GetSemanticVersion() (v string) {
+	if !p.IsSetSemanticVersion() {
+		return IDLVersionSummary_SemanticVersion_DEFAULT
+	}
+	return *p.SemanticVersion
+}
+
+var IDLVersionSummary_Psm_DEFAULT string
+
+func (p *IDLVersionSummary) GetPsm() (v string) {
+	if !p.IsSetPsm() {
+		return IDLVersionSummary_Psm_DEFAULT
+	}
+	return *p.Psm
+}
 func (p *IDLVersionSummary) SetRepository(val string) {
 	p.Repository = val
 }
@@ -2052,6 +2162,12 @@ func (p *IDLVersionSummary) SetClientArtifact(val *ClientArtifactSummary) {
 func (p *IDLVersionSummary) SetVersionNumber(val *int64) {
 	p.VersionNumber = val
 }
+func (p *IDLVersionSummary) SetSemanticVersion(val *string) {
+	p.SemanticVersion = val
+}
+func (p *IDLVersionSummary) SetPsm(val *string) {
+	p.Psm = val
+}
 
 func (p *IDLVersionSummary) IsSetTag() bool {
 	return p.Tag != nil
@@ -2063,6 +2179,14 @@ func (p *IDLVersionSummary) IsSetClientArtifact() bool {
 
 func (p *IDLVersionSummary) IsSetVersionNumber() bool {
 	return p.VersionNumber != nil
+}
+
+func (p *IDLVersionSummary) IsSetSemanticVersion() bool {
+	return p.SemanticVersion != nil
+}
+
+func (p *IDLVersionSummary) IsSetPsm() bool {
+	return p.Psm != nil
 }
 
 func (p *IDLVersionSummary) String() string {
@@ -2087,12 +2211,15 @@ var fieldIDToName_IDLVersionSummary = map[int16]string{
 	12: "endpointCount",
 	13: "clientArtifact",
 	14: "versionNumber",
+	15: "semanticVersion",
+	16: "psm",
 }
 
 type ListServiceVersionsReq struct {
 	Repository *string `thrift:"repository,1,optional" frugal:"1,optional,string" json:"repository,omitempty"`
 	Service    *string `thrift:"service,2,optional" frugal:"2,optional,string" json:"service,omitempty"`
 	Branch     *string `thrift:"branch,3,optional" frugal:"3,optional,string" json:"branch,omitempty"`
+	Psm        *string `thrift:"psm,4,optional" frugal:"4,optional,string" json:"psm,omitempty"`
 }
 
 func NewListServiceVersionsReq() *ListServiceVersionsReq {
@@ -2128,6 +2255,15 @@ func (p *ListServiceVersionsReq) GetBranch() (v string) {
 	}
 	return *p.Branch
 }
+
+var ListServiceVersionsReq_Psm_DEFAULT string
+
+func (p *ListServiceVersionsReq) GetPsm() (v string) {
+	if !p.IsSetPsm() {
+		return ListServiceVersionsReq_Psm_DEFAULT
+	}
+	return *p.Psm
+}
 func (p *ListServiceVersionsReq) SetRepository(val *string) {
 	p.Repository = val
 }
@@ -2136,6 +2272,9 @@ func (p *ListServiceVersionsReq) SetService(val *string) {
 }
 func (p *ListServiceVersionsReq) SetBranch(val *string) {
 	p.Branch = val
+}
+func (p *ListServiceVersionsReq) SetPsm(val *string) {
+	p.Psm = val
 }
 
 func (p *ListServiceVersionsReq) IsSetRepository() bool {
@@ -2150,6 +2289,10 @@ func (p *ListServiceVersionsReq) IsSetBranch() bool {
 	return p.Branch != nil
 }
 
+func (p *ListServiceVersionsReq) IsSetPsm() bool {
+	return p.Psm != nil
+}
+
 func (p *ListServiceVersionsReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -2161,6 +2304,7 @@ var fieldIDToName_ListServiceVersionsReq = map[int16]string{
 	1: "repository",
 	2: "service",
 	3: "branch",
+	4: "psm",
 }
 
 type ServiceVersionsResp struct {

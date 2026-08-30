@@ -3866,6 +3866,20 @@ func (p *SnapshotReq) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField5(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -3940,6 +3954,20 @@ func (p *SnapshotReq) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *SnapshotReq) FastReadField5(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.Psm = _field
+	return offset, nil
+}
+
 func (p *SnapshotReq) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -3951,6 +3979,7 @@ func (p *SnapshotReq) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
 		offset += p.fastWriteField4(buf[offset:], w)
+		offset += p.fastWriteField5(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -3963,6 +3992,7 @@ func (p *SnapshotReq) BLength() int {
 		l += p.field2Length()
 		l += p.field3Length()
 		l += p.field4Length()
+		l += p.field5Length()
 	}
 	l += thrift.Binary.FieldStopLength()
 	return l
@@ -4004,6 +4034,15 @@ func (p *SnapshotReq) fastWriteField4(buf []byte, w thrift.NocopyWriter) int {
 	return offset
 }
 
+func (p *SnapshotReq) fastWriteField5(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetPsm() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 5)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Psm)
+	}
+	return offset
+}
+
 func (p *SnapshotReq) field1Length() int {
 	l := 0
 	if p.IsSetRepository() {
@@ -4036,6 +4075,15 @@ func (p *SnapshotReq) field4Length() int {
 	if p.IsSetCommit() {
 		l += thrift.Binary.FieldBeginLength()
 		l += thrift.Binary.StringLengthNocopy(*p.Commit)
+	}
+	return l
+}
+
+func (p *SnapshotReq) field5Length() int {
+	l := 0
+	if p.IsSetPsm() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.Psm)
 	}
 	return l
 }
@@ -5550,6 +5598,34 @@ func (p *ServiceSummary) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 14:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField14(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 15:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField15(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -5854,6 +5930,34 @@ func (p *ServiceSummary) FastReadField13(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *ServiceSummary) FastReadField14(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.SemanticVersion = _field
+	return offset, nil
+}
+
+func (p *ServiceSummary) FastReadField15(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *int64
+	if v, l, err := thrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.VersionNumber = _field
+	return offset, nil
+}
+
 func (p *ServiceSummary) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -5862,6 +5966,7 @@ func (p *ServiceSummary) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int 
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField8(buf[offset:], w)
+		offset += p.fastWriteField15(buf[offset:], w)
 		offset += p.fastWriteField1(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
@@ -5874,6 +5979,7 @@ func (p *ServiceSummary) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int 
 		offset += p.fastWriteField11(buf[offset:], w)
 		offset += p.fastWriteField12(buf[offset:], w)
 		offset += p.fastWriteField13(buf[offset:], w)
+		offset += p.fastWriteField14(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -5895,6 +6001,8 @@ func (p *ServiceSummary) BLength() int {
 		l += p.field11Length()
 		l += p.field12Length()
 		l += p.field13Length()
+		l += p.field14Length()
+		l += p.field15Length()
 	}
 	l += thrift.Binary.FieldStopLength()
 	return l
@@ -6018,6 +6126,24 @@ func (p *ServiceSummary) fastWriteField13(buf []byte, w thrift.NocopyWriter) int
 	return offset
 }
 
+func (p *ServiceSummary) fastWriteField14(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetSemanticVersion() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 14)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.SemanticVersion)
+	}
+	return offset
+}
+
+func (p *ServiceSummary) fastWriteField15(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetVersionNumber() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.I64, 15)
+		offset += thrift.Binary.WriteI64(buf[offset:], *p.VersionNumber)
+	}
+	return offset
+}
+
 func (p *ServiceSummary) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
@@ -6125,6 +6251,24 @@ func (p *ServiceSummary) field13Length() int {
 	if p.IsSetPsm() {
 		l += thrift.Binary.FieldBeginLength()
 		l += thrift.Binary.StringLengthNocopy(*p.Psm)
+	}
+	return l
+}
+
+func (p *ServiceSummary) field14Length() int {
+	l := 0
+	if p.IsSetSemanticVersion() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.SemanticVersion)
+	}
+	return l
+}
+
+func (p *ServiceSummary) field15Length() int {
+	l := 0
+	if p.IsSetVersionNumber() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.I64Length()
 	}
 	return l
 }
@@ -6721,6 +6865,34 @@ func (p *ServiceCatalogItem) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField5(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 6:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField6(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -6822,6 +6994,34 @@ func (p *ServiceCatalogItem) FastReadField4(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *ServiceCatalogItem) FastReadField5(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.SemanticVersion = _field
+	return offset, nil
+}
+
+func (p *ServiceCatalogItem) FastReadField6(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *int64
+	if v, l, err := thrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.VersionNumber = _field
+	return offset, nil
+}
+
 func (p *ServiceCatalogItem) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -6829,10 +7029,12 @@ func (p *ServiceCatalogItem) FastWrite(buf []byte) int {
 func (p *ServiceCatalogItem) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
+		offset += p.fastWriteField6(buf[offset:], w)
 		offset += p.fastWriteField1(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
 		offset += p.fastWriteField4(buf[offset:], w)
+		offset += p.fastWriteField5(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -6845,6 +7047,8 @@ func (p *ServiceCatalogItem) BLength() int {
 		l += p.field2Length()
 		l += p.field3Length()
 		l += p.field4Length()
+		l += p.field5Length()
+		l += p.field6Length()
 	}
 	l += thrift.Binary.FieldStopLength()
 	return l
@@ -6887,6 +7091,24 @@ func (p *ServiceCatalogItem) fastWriteField4(buf []byte, w thrift.NocopyWriter) 
 	return offset
 }
 
+func (p *ServiceCatalogItem) fastWriteField5(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetSemanticVersion() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 5)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.SemanticVersion)
+	}
+	return offset
+}
+
+func (p *ServiceCatalogItem) fastWriteField6(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetVersionNumber() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.I64, 6)
+		offset += thrift.Binary.WriteI64(buf[offset:], *p.VersionNumber)
+	}
+	return offset
+}
+
 func (p *ServiceCatalogItem) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
@@ -6917,6 +7139,24 @@ func (p *ServiceCatalogItem) field4Length() int {
 	if p.IsSetPsm() {
 		l += thrift.Binary.FieldBeginLength()
 		l += thrift.Binary.StringLengthNocopy(*p.Psm)
+	}
+	return l
+}
+
+func (p *ServiceCatalogItem) field5Length() int {
+	l := 0
+	if p.IsSetSemanticVersion() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.SemanticVersion)
+	}
+	return l
+}
+
+func (p *ServiceCatalogItem) field6Length() int {
+	l := 0
+	if p.IsSetVersionNumber() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.I64Length()
 	}
 	return l
 }
@@ -7881,6 +8121,34 @@ func (p *IDLVersionSummary) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 15:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField15(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 16:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField16(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -8149,6 +8417,34 @@ func (p *IDLVersionSummary) FastReadField14(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *IDLVersionSummary) FastReadField15(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.SemanticVersion = _field
+	return offset, nil
+}
+
+func (p *IDLVersionSummary) FastReadField16(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.Psm = _field
+	return offset, nil
+}
+
 func (p *IDLVersionSummary) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -8170,6 +8466,8 @@ func (p *IDLVersionSummary) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) i
 		offset += p.fastWriteField9(buf[offset:], w)
 		offset += p.fastWriteField11(buf[offset:], w)
 		offset += p.fastWriteField13(buf[offset:], w)
+		offset += p.fastWriteField15(buf[offset:], w)
+		offset += p.fastWriteField16(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -8192,6 +8490,8 @@ func (p *IDLVersionSummary) BLength() int {
 		l += p.field12Length()
 		l += p.field13Length()
 		l += p.field14Length()
+		l += p.field15Length()
+		l += p.field16Length()
 	}
 	l += thrift.Binary.FieldStopLength()
 	return l
@@ -8301,6 +8601,24 @@ func (p *IDLVersionSummary) fastWriteField14(buf []byte, w thrift.NocopyWriter) 
 	return offset
 }
 
+func (p *IDLVersionSummary) fastWriteField15(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetSemanticVersion() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 15)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.SemanticVersion)
+	}
+	return offset
+}
+
+func (p *IDLVersionSummary) fastWriteField16(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetPsm() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 16)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Psm)
+	}
+	return offset
+}
+
 func (p *IDLVersionSummary) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
@@ -8405,6 +8723,24 @@ func (p *IDLVersionSummary) field14Length() int {
 	return l
 }
 
+func (p *IDLVersionSummary) field15Length() int {
+	l := 0
+	if p.IsSetSemanticVersion() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.SemanticVersion)
+	}
+	return l
+}
+
+func (p *IDLVersionSummary) field16Length() int {
+	l := 0
+	if p.IsSetPsm() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.Psm)
+	}
+	return l
+}
+
 func (p *ListServiceVersionsReq) FastRead(buf []byte) (int, error) {
 
 	var err error
@@ -8453,6 +8789,20 @@ func (p *ListServiceVersionsReq) FastRead(buf []byte) (int, error) {
 		case 3:
 			if fieldTypeId == thrift.STRING {
 				l, err = p.FastReadField3(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField4(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
@@ -8524,6 +8874,20 @@ func (p *ListServiceVersionsReq) FastReadField3(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *ListServiceVersionsReq) FastReadField4(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.Psm = _field
+	return offset, nil
+}
+
 func (p *ListServiceVersionsReq) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
@@ -8534,6 +8898,7 @@ func (p *ListServiceVersionsReq) FastWriteNocopy(buf []byte, w thrift.NocopyWrit
 		offset += p.fastWriteField1(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
 		offset += p.fastWriteField3(buf[offset:], w)
+		offset += p.fastWriteField4(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
 	return offset
@@ -8545,6 +8910,7 @@ func (p *ListServiceVersionsReq) BLength() int {
 		l += p.field1Length()
 		l += p.field2Length()
 		l += p.field3Length()
+		l += p.field4Length()
 	}
 	l += thrift.Binary.FieldStopLength()
 	return l
@@ -8577,6 +8943,15 @@ func (p *ListServiceVersionsReq) fastWriteField3(buf []byte, w thrift.NocopyWrit
 	return offset
 }
 
+func (p *ListServiceVersionsReq) fastWriteField4(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetPsm() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 4)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Psm)
+	}
+	return offset
+}
+
 func (p *ListServiceVersionsReq) field1Length() int {
 	l := 0
 	if p.IsSetRepository() {
@@ -8600,6 +8975,15 @@ func (p *ListServiceVersionsReq) field3Length() int {
 	if p.IsSetBranch() {
 		l += thrift.Binary.FieldBeginLength()
 		l += thrift.Binary.StringLengthNocopy(*p.Branch)
+	}
+	return l
+}
+
+func (p *ListServiceVersionsReq) field4Length() int {
+	l := 0
+	if p.IsSetPsm() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.Psm)
 	}
 	return l
 }
