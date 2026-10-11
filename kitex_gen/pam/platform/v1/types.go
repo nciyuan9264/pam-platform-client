@@ -1300,15 +1300,17 @@ var fieldIDToName_ThriftStruct = map[int16]string{
 }
 
 type Endpoint struct {
-	Name         string `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
-	OperationId  string `thrift:"operationId,2,required" frugal:"2,required,string" json:"operationId"`
-	Method       string `thrift:"method,3,required" frugal:"3,required,string" json:"method"`
-	Path         string `thrift:"path,4,required" frugal:"4,required,string" json:"path"`
-	Summary      string `thrift:"summary,5,required" frugal:"5,required,string" json:"summary"`
-	RequestType  string `thrift:"requestType,6,required" frugal:"6,required,string" json:"requestType"`
-	ResponseType string `thrift:"responseType,7,required" frugal:"7,required,string" json:"responseType"`
-	ContentType  string `thrift:"contentType,8,required" frugal:"8,required,string" json:"contentType"`
-	AuthRequired bool   `thrift:"authRequired,9,required" frugal:"9,required,bool" json:"authRequired"`
+	Name                string   `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
+	OperationId         string   `thrift:"operationId,2,required" frugal:"2,required,string" json:"operationId"`
+	Method              string   `thrift:"method,3,required" frugal:"3,required,string" json:"method"`
+	Path                string   `thrift:"path,4,required" frugal:"4,required,string" json:"path"`
+	Summary             string   `thrift:"summary,5,required" frugal:"5,required,string" json:"summary"`
+	RequestType         string   `thrift:"requestType,6,required" frugal:"6,required,string" json:"requestType"`
+	ResponseType        string   `thrift:"responseType,7,required" frugal:"7,required,string" json:"responseType"`
+	ContentType         string   `thrift:"contentType,8,required" frugal:"8,required,string" json:"contentType"`
+	AuthRequired        bool     `thrift:"authRequired,9,required" frugal:"9,required,bool" json:"authRequired"`
+	AuthRoles           []string `thrift:"authRoles,10,optional" frugal:"10,optional,list<string>" json:"authRoles,omitempty"`
+	MachineAuthRequired *bool    `thrift:"machineAuthRequired,11,optional" frugal:"11,optional,bool" json:"machineAuthRequired,omitempty"`
 }
 
 func NewEndpoint() *Endpoint {
@@ -1353,6 +1355,24 @@ func (p *Endpoint) GetContentType() (v string) {
 func (p *Endpoint) GetAuthRequired() (v bool) {
 	return p.AuthRequired
 }
+
+var Endpoint_AuthRoles_DEFAULT []string
+
+func (p *Endpoint) GetAuthRoles() (v []string) {
+	if !p.IsSetAuthRoles() {
+		return Endpoint_AuthRoles_DEFAULT
+	}
+	return p.AuthRoles
+}
+
+var Endpoint_MachineAuthRequired_DEFAULT bool
+
+func (p *Endpoint) GetMachineAuthRequired() (v bool) {
+	if !p.IsSetMachineAuthRequired() {
+		return Endpoint_MachineAuthRequired_DEFAULT
+	}
+	return *p.MachineAuthRequired
+}
 func (p *Endpoint) SetName(val string) {
 	p.Name = val
 }
@@ -1380,6 +1400,20 @@ func (p *Endpoint) SetContentType(val string) {
 func (p *Endpoint) SetAuthRequired(val bool) {
 	p.AuthRequired = val
 }
+func (p *Endpoint) SetAuthRoles(val []string) {
+	p.AuthRoles = val
+}
+func (p *Endpoint) SetMachineAuthRequired(val *bool) {
+	p.MachineAuthRequired = val
+}
+
+func (p *Endpoint) IsSetAuthRoles() bool {
+	return p.AuthRoles != nil
+}
+
+func (p *Endpoint) IsSetMachineAuthRequired() bool {
+	return p.MachineAuthRequired != nil
+}
 
 func (p *Endpoint) String() string {
 	if p == nil {
@@ -1389,15 +1423,17 @@ func (p *Endpoint) String() string {
 }
 
 var fieldIDToName_Endpoint = map[int16]string{
-	1: "name",
-	2: "operationId",
-	3: "method",
-	4: "path",
-	5: "summary",
-	6: "requestType",
-	7: "responseType",
-	8: "contentType",
-	9: "authRequired",
+	1:  "name",
+	2:  "operationId",
+	3:  "method",
+	4:  "path",
+	5:  "summary",
+	6:  "requestType",
+	7:  "responseType",
+	8:  "contentType",
+	9:  "authRequired",
+	10: "authRoles",
+	11: "machineAuthRequired",
 }
 
 type ServiceSummary struct {
@@ -2478,8 +2514,11 @@ var fieldIDToName_GatewayConfigReq = map[int16]string{
 }
 
 type GatewayRoute struct {
-	Method string `thrift:"method,1,required" frugal:"1,required,string" json:"method"`
-	Path   string `thrift:"path,2,required" frugal:"2,required,string" json:"path"`
+	Method              string   `thrift:"method,1,required" frugal:"1,required,string" json:"method"`
+	Path                string   `thrift:"path,2,required" frugal:"2,required,string" json:"path"`
+	AuthRequired        *bool    `thrift:"authRequired,3,optional" frugal:"3,optional,bool" json:"authRequired,omitempty"`
+	AuthRoles           []string `thrift:"authRoles,4,optional" frugal:"4,optional,list<string>" json:"authRoles,omitempty"`
+	MachineAuthRequired *bool    `thrift:"machineAuthRequired,5,optional" frugal:"5,optional,bool" json:"machineAuthRequired,omitempty"`
 }
 
 func NewGatewayRoute() *GatewayRoute {
@@ -2496,11 +2535,59 @@ func (p *GatewayRoute) GetMethod() (v string) {
 func (p *GatewayRoute) GetPath() (v string) {
 	return p.Path
 }
+
+var GatewayRoute_AuthRequired_DEFAULT bool
+
+func (p *GatewayRoute) GetAuthRequired() (v bool) {
+	if !p.IsSetAuthRequired() {
+		return GatewayRoute_AuthRequired_DEFAULT
+	}
+	return *p.AuthRequired
+}
+
+var GatewayRoute_AuthRoles_DEFAULT []string
+
+func (p *GatewayRoute) GetAuthRoles() (v []string) {
+	if !p.IsSetAuthRoles() {
+		return GatewayRoute_AuthRoles_DEFAULT
+	}
+	return p.AuthRoles
+}
+
+var GatewayRoute_MachineAuthRequired_DEFAULT bool
+
+func (p *GatewayRoute) GetMachineAuthRequired() (v bool) {
+	if !p.IsSetMachineAuthRequired() {
+		return GatewayRoute_MachineAuthRequired_DEFAULT
+	}
+	return *p.MachineAuthRequired
+}
 func (p *GatewayRoute) SetMethod(val string) {
 	p.Method = val
 }
 func (p *GatewayRoute) SetPath(val string) {
 	p.Path = val
+}
+func (p *GatewayRoute) SetAuthRequired(val *bool) {
+	p.AuthRequired = val
+}
+func (p *GatewayRoute) SetAuthRoles(val []string) {
+	p.AuthRoles = val
+}
+func (p *GatewayRoute) SetMachineAuthRequired(val *bool) {
+	p.MachineAuthRequired = val
+}
+
+func (p *GatewayRoute) IsSetAuthRequired() bool {
+	return p.AuthRequired != nil
+}
+
+func (p *GatewayRoute) IsSetAuthRoles() bool {
+	return p.AuthRoles != nil
+}
+
+func (p *GatewayRoute) IsSetMachineAuthRequired() bool {
+	return p.MachineAuthRequired != nil
 }
 
 func (p *GatewayRoute) String() string {
@@ -2513,6 +2600,9 @@ func (p *GatewayRoute) String() string {
 var fieldIDToName_GatewayRoute = map[int16]string{
 	1: "method",
 	2: "path",
+	3: "authRequired",
+	4: "authRoles",
+	5: "machineAuthRequired",
 }
 
 type GatewayServiceBinding struct {
